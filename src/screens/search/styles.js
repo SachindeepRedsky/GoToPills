@@ -1,72 +1,71 @@
-import { StyleSheet } from "react-native";
-import { spacings } from '../../constants/fonts';
+import {StyleSheet} from 'react-native';
+import {spacings} from '../../constants/fonts';
 import * as colors from '../../constants/colors';
 
-
 const styles = StyleSheet.create({
-  MainBox:{
-    flex:1,
-    marginTop:'2%',
- },
-  
-  menuicon:{
-    width:15,
-    height:15,
-    marginLeft:10,
+  MainBox: {
+    flex: 1,
+    marginTop: '2%',
   },
-Item1: {
-  flex:1,
- flexDirection: 'row',
- marginLeft:15,
-},
-SubView:{
- flex:1,
- flexDirection:'column',
- justifyContent:'center',
- marginLeft:20,
- marginRight:20
-},
-datatext:{
-  fontSize:16,
-   fontWeight:'bold',
-   color:'black',
-   lineHeight:25
-},
-titleText:{
-  marginLeft:'1%',
-  fontSize:14,
-  paddingTop:1 ,
-  lineHeight:25
-},
-datatext1:{
- color:'red',
- marginTop:15,
- alignItems:'center'
-},
-datatext12:{
- color:'black',
- marginTop:15,
- alignItems:'center'
-},
-TextView:{
- flex:1,
- flexDirection:'row',
- 
- margin:10
-},
-Button:{
- marginTop:40,
-  backgroundColor:colors.btnColor,
-  height:40,
-  borderRadius:8
-},
-ButtonText:{
- textAlign:'center',
- fontSize:20,
- fontWeight:'bold',
- color:'#1b5987',
- paddingTop:5
-},
+
+  menuicon: {
+    width: 15,
+    height: 15,
+    marginLeft: 10,
+  },
+  Item1: {
+    flex: 1,
+    flexDirection: 'row',
+    marginLeft: 15,
+  },
+  SubView: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  datatext: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'black',
+    lineHeight: 25,
+  },
+  titleText: {
+    marginLeft: '1%',
+    fontSize: 14,
+    paddingTop: 1,
+    lineHeight: 25,
+  },
+  datatext1: {
+    color: 'red',
+    marginTop: 15,
+    alignItems: 'center',
+  },
+  datatext12: {
+    color: 'black',
+    marginTop: 15,
+    alignItems: 'center',
+  },
+  TextView: {
+    flex: 1,
+    flexDirection: 'row',
+
+    margin: 10,
+  },
+  Button: {
+    marginTop: 40,
+    backgroundColor: colors.btnColor,
+    height: 40,
+    borderRadius: 8,
+  },
+  ButtonText: {
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#1b5987',
+    paddingTop: 5,
+  },
   container: {
     flex: 1,
     // alignItems:'center'
@@ -79,12 +78,12 @@ ButtonText:{
     color: '#8ea6e6',
     textAlign: 'center',
     marginTop: spacings.xxsmall,
-    marginBottom: spacings.medium
+    marginBottom: spacings.medium,
   },
   menuicon: {
     width: 15,
     height: 15,
-    marginLeft: 10
+    marginLeft: 10,
   },
   inputBox: {
     //borderBottomWidth:2,
@@ -92,20 +91,20 @@ ButtonText:{
     height: 40,
     // borderBottomWidth: 2,
     // borderBottomColor: '#dadada',
-    padding: 0
+    padding: 0,
   },
   horizontalline: {
     // marginLeft: 13,
     width: '100%',
     height: 1,
     backgroundColor: '#dadada',
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 1,
     },
     shadowOpacity: 0.18,
-    shadowRadius: 1.00,
+    shadowRadius: 1.0,
 
     elevation: 1,
   },
@@ -113,27 +112,27 @@ ButtonText:{
     width: '80%',
     height: 1,
     backgroundColor: '#adadad',
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 1,
     },
     shadowOpacity: 0.18,
-    shadowRadius: 1.00,
+    shadowRadius: 1.0,
     elevation: 1,
-    alignSelf: 'flex-end'
+    alignSelf: 'flex-end',
   },
   dropDownLine1: {
     width: '80%',
     height: 1,
     backgroundColor: '#adadad',
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 1,
     },
     shadowOpacity: 0.18,
-    shadowRadius: 1.00,
+    shadowRadius: 1.0,
     elevation: 1,
   },
   Text: {
@@ -144,7 +143,7 @@ ButtonText:{
   },
   Textinputbox: {
     color: '#a0a0a0',
-    paddingTop: 16
+    paddingTop: 16,
   },
   inputView: {
     //flex:1,
@@ -152,13 +151,13 @@ ButtonText:{
     //marginTop:20,
     alignItems: 'stretch',
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   middleView: {
     flexDirection: 'row',
     //alignItems:'stretch',
     width: '90%',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   MiddleFirstView: {
     // marginLeft: 10,
@@ -167,58 +166,61 @@ ButtonText:{
   },
   MiddleSecondView: {
     alignContent: 'flex-end',
-    width: '50%'
+    width: '50%',
   },
   inputBox1: {
     borderBottomWidth: 2,
     borderBottomColor: '#dadada',
     width: '80%',
     height: 30,
-    padding: 0
+    padding: 0,
   },
   focusedInputBox1: {
     borderBottomWidth: 2,
     borderBottomColor: colors.headerColor,
     width: '80%',
     height: 30,
-    padding: 0
+    padding: 0,
   },
   dropDown: {
     height: 50,
     width: '80%',
-    borderWidth: 1,
     alignSelf: 'flex-end',
-    marginTop: 15
+    marginTop: 15,
+  },
+  PickerView1: {
+    borderBottomWidth: 2,
+    borderBottomColor: '#dadada',
   },
   dropDown1: {
     height: 50,
     width: '80%',
     borderBottomWidth: 2,
-    borderBottomColor: '#dadada'
+    borderBottomColor: '#dadada',
   },
   Button: {
     marginTop: 25,
     backgroundColor: colors.btnColor,
     width: '100%',
     height: 45,
-    borderRadius: 8
+    borderRadius: 8,
   },
   ButtonText: {
     textAlign: 'center',
     fontSize: 20,
     fontWeight: 'bold',
     color: '#1b5987',
-    paddingTop: 5
+    paddingTop: 5,
   },
   BottomView: {
     alignItems: 'center',
     height: 200,
-    marginTop: 5
+    marginTop: 5,
   },
   buttonView: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: 300
+    height: 300,
   },
   BottomText: {
     color: colors.headerColor,
@@ -246,7 +248,7 @@ ButtonText:{
   autocompleteText: {
     width: '100%',
     height: 40,
-    fontSize: 16
+    fontSize: 16,
   },
   autocompleteListContainerStyle: {
     width: '100%',
@@ -256,12 +258,12 @@ ButtonText:{
   autocompleteListStyle: {
     width: '100%',
     marginLeft: 0,
-    backgroundColor: '#fafafa'
+    backgroundColor: '#fafafa',
   },
   autocompleteInputContainer: {
     width: '100%',
     paddingLeft: 10,
-    paddingRight: 10
-  }
+    paddingRight: 10,
+  },
 });
 export default styles;
