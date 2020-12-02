@@ -16,6 +16,7 @@
     "@react-native-community/toolbar-android": "0.1.0-rc.2",
     "@react-navigation/material-bottom-tabs": "^5.0.5",
     "checkbox": "0.0.1",
+    "expo": "^39.0.5",
     "moment": "^2.24.0",
     "native-base": "^2.13.8",
     "react": "16.13.1",
