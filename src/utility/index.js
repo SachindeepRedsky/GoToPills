@@ -3,7 +3,6 @@ import { Dimensions, PixelRatio } from 'react-native';
 import * as titles from '../constants/title';
 export var deviceHeight = Dimensions.get('window').height;
 export var deviceWidth = Dimensions.get('window').width;
-import AsyncStorage from '@react-native-community/async-storage';
 
 export const getPageLimit = () => {
     return 10;
@@ -87,32 +86,6 @@ export const showAlertWithCallBack = (msg, onOkClick) => {
     );
 };
 
-export const setInLocalStorge = async (key: String, token) => {
-    try {
-        const res = await AsyncStorage.setItem(key, JSON.stringify(token));
-        console.log('setInLocalStorge', res);
-    } catch (err) {
-        console.log('setInLocalStorge Error', err);
-    }
-};
-
-export const getFromLocalStorge = async (key: String) => {
-    try {
-        const token = await AsyncStorage.getItem(key);
-        return token ? JSON.parse(token) : null;
-    } catch (err) {
-        console.log('getFromLocalStorge Error', err);
-    }
-};
-
-
-export const removeAuthKey = async (key: String) => {
-    try {
-        let res = await AsyncStorage.removeItem(key);
-    } catch (err) {
-        console.log('removeToken Error', err);
-    }
-};
 export const widthPercentageToDP = widthPercent => {
     const screenWidth = Dimensions.get('window').width;
     const elemWidth = parseFloat(widthPercent);
@@ -124,11 +97,4 @@ export const heightPercentageToDP = heightPercent => {
     const elemHeight = parseFloat(heightPercent);
     return PixelRatio.roundToNearestPixel(screenHeight * elemHeight / 100);
 };
-export const AuthToken = async (key: String) => {
-    try {
-        const token = await AsyncStorage.getItem(key);
-        return token ? JSON.parse(token) : null;
-    } catch (err) {
-        console.log('authToken Error', err);
-    }
-};
+

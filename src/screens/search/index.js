@@ -5,7 +5,6 @@ import {
   ScrollView,
   Linking,
   TextInput,
-  Picker,
   TouchableOpacity,
 } from 'react-native';
 import MainHeader from '../../components/MainHeader';
@@ -14,6 +13,7 @@ import styles from './styles';
 import * as api from '../../api/bulletin-service';
 import * as searchService from '../../api/search-service';
 import Autocomplete from 'react-native-autocomplete-input';
+import {Picker} from 'native-base';
 
 var bullitens = [];
 var conditions = [];
@@ -294,18 +294,20 @@ export default class Search extends Component {
                     <Text style={styles.Textinputbox}>
                       {searchStrings.gender}
                     </Text>
+                  <View style={[styles.PickerView1]}>
                     <Picker
                       selectedValue={this.state.selectedGender}
                       style={styles.dropDown1}
-                      onValueChange={(itemValue, itemIndex) =>
+                      onValueChange={(itemValue, key) =>
                         this.setState({selectedGender: itemValue})
                       }>
                       <Picker.Item label="Male" value="Male" />
                       <Picker.Item label="Female" value="Female" />
                     </Picker>
-                    <View style={styles.dropDownLine1} />
+                    </View>
                   </View>
                   <View style={styles.MiddleSecondView}>
+                  <View style={[styles.PickerView1]}>
                     <Picker
                       selectedValue={this.state.selectedDurationType}
                       style={styles.dropDown}
@@ -317,7 +319,8 @@ export default class Search extends Component {
                       <Picker.Item label="Months" value="Months" />
                       <Picker.Item label="Years" value="Years" />
                     </Picker>
-                    <View style={styles.dropDownLine} />
+                    </View>
+                    <View style={[styles.PickerView1]}>
                     <Picker
                       selectedValue={this.state.selectedAgeType}
                       style={styles.dropDown}
@@ -328,7 +331,7 @@ export default class Search extends Component {
                       <Picker.Item label="Months" value="Months" />
                       <Picker.Item label="Days" value="Days" />
                     </Picker>
-                    <View style={styles.dropDownLine} />
+                    </View>
                   </View>
                 </View>
                 <TouchableOpacity
