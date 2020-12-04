@@ -41,9 +41,14 @@ export default class Bulletin extends Component {
   };
 
   render() {
-    const renderItem = ({item,key}) => (
-      <TouchableOpacity key={key}
+    const renderItem = ({item, key}) => (
+      <TouchableOpacity
+        key={key}
         onPress={() => {
+          this.timerFlatlistRef.scrollToIndex({
+            animated: true,
+            index: 0,
+          }); 
           this.props.navigation.navigate('Bulletindetails', {
             bullID: item.bullID,
             GenericName: item.GenericName,
@@ -63,6 +68,7 @@ export default class Bulletin extends Component {
           title={bulletinStrings.headerTitle}
         />
         <FlatList
+           ref={ref => (this.timerFlatlistRef = ref)}
           data={this.state.bullitens}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
