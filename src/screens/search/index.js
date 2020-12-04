@@ -6,6 +6,7 @@ import {
   Linking,
   TextInput,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import MainHeader from '../../components/MainHeader';
 import {searchStrings} from '../../constants/title';
@@ -25,8 +26,34 @@ export default class Search extends Component {
       searchResults: {},
       prescribedText: String,
       diagnosedText: String,
-      durationText: String,
-      ageText: String,
+      durationText: '',
+      ageText: '',
+      hasDurationFocus: Boolean,
+      hasAgeFocus: Boolean,
+      bullitensQuery: '',
+      conditionQuery: '',
+      hideResults: false,
+      hideResults2: false,
+      screenHeight: String,
+      screenWidth: Number,
+      selectedDurationType: 'days',
+      selectedAgeType: 'years',
+      gender: 'male',
+      isSearchDone: false,
+      alerts: {
+        None: '',
+      },
+    };
+  }
+
+  resetState = async () => {
+    console.log('reset state')
+    await this.setState({
+      searchResults: {},
+      prescribedText: String,
+      diagnosedText: String,
+      durationText: '',
+      ageText: '',
       hasDurationFocus: Boolean,
       hasAgeFocus: Boolean,
       bullitensQuery: '',
@@ -34,17 +61,15 @@ export default class Search extends Component {
       hideResults: false,
       screenHeight: String,
       screenWidth: Number,
-      selectedDurationType: 'Days',
-      selectedAgeType: 'Years',
-      selectedGender: 'Male',
+      selectedDurationType: 'days',
+      selectedAgeType: 'years',
+      gender: 'male',
       isSearchDone: false,
-      Data: [
-        {name: 'Generic Name:', title: ''},
-        {name: 'Drua Category:', title: ''},
-        {name: 'Litiqation Alert Level:', title: ''},
-      ],
-    };
-  }
+      alerts: {
+        None: '',
+      },
+    });
+  };
 
   onChangeText(text, val) {
     if (val == 1) {
@@ -60,9 +85,9 @@ export default class Search extends Component {
     }
   }
 
-  componentDidMount() {
-    this.getBullitens();
-    this.getConditions();
+  componentDidMount= async()=> {
+    await this.getBullitens();
+   await this.getConditions();
   }
 
   getBullitens = async () => {
@@ -109,7 +134,7 @@ export default class Search extends Component {
     this.setState({
       //   selectedCustomerId: item.id,
       conditionQuery: item.name,
-      hideResults: true,
+      hideResults2: true,
     });
   }
 
@@ -125,20 +150,18 @@ export default class Search extends Component {
     var drug = {
       ms: this.state.bullitensQuery,
       reason: this.state.conditionQuery,
-      condition: this.state.conditionQuery,
+      reason: this.state.conditionQuery,
       age: this.state.ageText,
       age_type: this.state.selectedAgeType,
       duration: this.state.durationText,
       duration_type: this.state.selectedDurationType,
       gender: this.state.gender,
     };
+    console.log('drug..............//////////////', drug);
     await searchService
       .bulletinSearch(drug)
       .then((result) => {
-        this.setState({
-          isSearchDone: true,
-        });
-        console.log('SEARCH RESPONSE::::::::', result);
+      
         if (result.usageAlerts != 'NONE') {
           if (
             this.state.reason != '' &&
@@ -150,22 +173,22 @@ export default class Search extends Component {
               '.';
           }
           if (
-            this.state.age != '' &&
+            this.state.ageText != '' &&
             result.usageAlerts.MinimumAge == null &&
             result.usageAlerts.MaximumAge == null
           ) {
             result.usageAlerts.MinimumAgeOK =
               'Min. Age: This drug is approved for use by patients older than ' +
-              this.state.age +
+              this.state.ageText +
               ' old.';
           }
           if (
-            this.state.duration != '' &&
+            this.state.durationText != '' &&
             result.usageAlerts.UsageDuration == null
           ) {
             result.usageAlerts.UsageDurationOK =
               'Duration: This drug is approved for up to ' +
-              this.state.duration +
+              this.state.durationText +
               ' ' +
               this.state.duration_type +
               ' of use.';
@@ -179,12 +202,22 @@ export default class Search extends Component {
           let searchResults = result;
           this.setState({
             searchResults: searchResults,
+            alerts: result.usageAlerts,
           });
+          this.setState({
+            isSearchDone: true,
+          });
+          console.log('SEARCH RESPONSE::::::::', result.usageAlerts);
         } else {
           let searchResults = result;
-          searchResults.usageAlerts = {None: 'No Off Label Results Found'};
+          result.usageAlerts = {None: 'No Off Label Results Found'};
+
           this.setState({
             searchResults: searchResults,
+            alerts: result.usageAlerts,
+          });
+          this.setState({
+            isSearchDone: true,
           });
         }
       })
@@ -255,10 +288,10 @@ export default class Search extends Component {
                       : data1
                   }
                   defaultValue={conditionQuery}
-                  hideResults={this.state.hideResults}
+                  hideResults={this.state.hideResults2}
                   inputContainerStyle={styles.autocompleteInputContainer}
                   onChangeText={(text) =>
-                    this.setState({conditionQuery: text, hideResults: false})
+                    this.setState({conditionQuery: text, hideResults2: false})
                   }
                   renderItem={({item, i}) => (
                     <TouchableOpacity
@@ -281,7 +314,12 @@ export default class Search extends Component {
                     <TextInput
                       style={styles.inputBox1}
                       placeholder="12"
-                      onChangeText={(text) => this.onChangeText(text, 1)}
+                      onChangeText={(text) => {
+                        console.log('texttexttexttexttext', text);
+                        this.setState({
+                          durationText: text,
+                        });
+                      }}
                     />
                     <Text style={styles.Textinputbox}>
                       {searchStrings.ageLable}
@@ -289,48 +327,76 @@ export default class Search extends Component {
                     <TextInput
                       style={styles.inputBox1}
                       placeholder="18"
-                      onChangeText={(text) => this.onChangeText(text, 2)}
+                      onChangeText={(text) =>
+                        this.setState({
+                          ageText: text,
+                        })
+                      }
                     />
                     <Text style={styles.Textinputbox}>
                       {searchStrings.gender}
                     </Text>
-                  <View style={[styles.PickerView1]}>
-                    <Picker
-                      selectedValue={this.state.selectedGender}
-                      style={styles.dropDown1}
-                      onValueChange={(itemValue, key) =>
-                        this.setState({selectedGender: itemValue})
-                      }>
-                      <Picker.Item label="Male" value="Male" />
-                      <Picker.Item label="Female" value="Female" />
-                    </Picker>
+                    <View style={[styles.PickerView1]}>
+                      <Picker
+                        mode={'dropdown'}
+                        selectedValue={this.state.gender}
+                        style={styles.dropDown1}
+                        onValueChange={(itemValue) => {
+                          console.log('itemValue', itemValue);
+                          this.setState({gender: itemValue});
+                        }}>
+                        <Picker.Item label="Male" value="male" />
+                        <Picker.Item label="Female" value="female" />
+                      </Picker>
+                      <Image
+                        source={require('../../assets/downarrow.png')}
+                        style={styles.pickericon}
+                      />
                     </View>
                   </View>
                   <View style={styles.MiddleSecondView}>
-                  <View style={[styles.PickerView1]}>
-                    <Picker
-                      selectedValue={this.state.selectedDurationType}
-                      style={styles.dropDown}
-                      onValueChange={(itemValue, itemIndex) =>
-                        this.setState({selectedDurationType: itemValue})
-                      }>
-                      <Picker.Item label="Days" value="Days" />
-                      <Picker.Item label="Weeks" value="Weeks" />
-                      <Picker.Item label="Months" value="Months" />
-                      <Picker.Item label="Years" value="Years" />
-                    </Picker>
+                    <View
+                      style={[
+                        styles.PickerView1,
+                        {paddingTop: '7%', alignSelf: 'flex-end'},
+                      ]}>
+                      <Picker
+                        mode={'dropdown'}
+                        selectedValue={this.state.selectedDurationType}
+                        style={styles.dropDown1}
+                        onValueChange={(itemValue, itemIndex) =>
+                          this.setState({selectedDurationType: itemValue})
+                        }>
+                        <Picker.Item label="Days" value="days" />
+                        <Picker.Item label="Weeks" value="weeks" />
+                        <Picker.Item label="Months" value="months" />
+                        <Picker.Item label="Years" value="years" />
+                      </Picker>
+                      <Image
+                        source={require('../../assets/downarrow.png')}
+                        style={styles.pickericon}
+                      />
                     </View>
-                    <View style={[styles.PickerView1]}>
-                    <Picker
-                      selectedValue={this.state.selectedAgeType}
-                      style={styles.dropDown}
-                      onValueChange={(itemValue, itemIndex) =>
-                        this.setState({selectedAgeType: itemValue})
-                      }>
-                      <Picker.Item label="Years" value="Years" />
-                      <Picker.Item label="Months" value="Months" />
-                      <Picker.Item label="Days" value="Days" />
-                    </Picker>
+                    <View
+                      style={[
+                        styles.PickerView1,
+                        {paddingTop: '7%', alignSelf: 'flex-end'},
+                      ]}>
+                      <Picker
+                        mode={'dropdown'}
+                        selectedValue={this.state.selectedAgeType}
+                        style={styles.dropDown1}
+                        onValueChange={(itemValue, itemIndex) =>
+                          this.setState({selectedAgeType: itemValue})
+                        }>
+                        <Picker.Item label="Years" value="years" />
+                        <Picker.Item label="Months" value="months" />
+                        <Picker.Item label="Days" value="days" />
+                      </Picker>
+                      <Image
+                        source={require('../../assets/downarrow.png')}
+                        style={styles.pickericon}
+                      />
                     </View>
                   </View>
                 </View>
@@ -381,87 +447,123 @@ export default class Search extends Component {
                 </Text>
               </View>
               <View style={styles.SubView}>
-                {this.state.searchResults &&
-                this.state.searchResults.OffLabelUses ? (
-                  <Text style={styles.datatext1}>
-                    {this.state.searchResults.OffLabelUses}
-                  </Text>
+                {this.state.alerts && this.state.alerts.OffLabelUses ? (
+                  <View style={styles.alert}>
+                    <Image
+                      source={require('../../assets/OffLabelUses.png')}
+                      style={styles.pickericon2}></Image>
+                    <Text style={[styles.datatext1, {color: '#c23f58'}]}>
+                      {this.state.alerts.OffLabelUses}
+                    </Text>
+                  </View>
                 ) : null}
-                {this.state.searchResults &&
-                this.state.searchResults.OffLabelUsesOK ? (
-                  <Text style={styles.datatext1}>
-                    {this.state.searchResults.OffLabelUsesOK}
-                  </Text>
+                {this.state.alerts && this.state.alerts.OffLabelUsesOK ? (
+                  <View style={styles.alert}>
+                    <Image
+                      source={require('../../assets/check.png')}
+                      style={styles.pickericon2}></Image>
+                    <Text style={styles.datatext1}>
+                      {this.state.alerts.OffLabelUsesOK}
+                    </Text>
+                  </View>
                 ) : null}
 
-                {this.state.searchResults &&
-                this.state.searchResults.MinimumAge ? (
-                  <Text style={styles.datatext12}>
-                    {' '}
-                    {this.state.searchResults.MinimumAge}
-                  </Text>
+                {this.state.alerts && this.state.alerts.MinimumAge ? (
+                  <View style={styles.alert}>
+                    <Image
+                      source={require('../../assets/OffLabelUses.png')}
+                      style={styles.pickericon2}></Image>
+                    <Text style={styles.datatext12}>
+                      {this.state.alerts.MinimumAge}
+                    </Text>
+                  </View>
                 ) : null}
-                {this.state.searchResults &&
-                this.state.searchResults.MinimumAgeOK ? (
-                  <Text style={styles.datatext12}>
-                    {' '}
-                    {this.state.searchResults.MinimumAgeOK}
-                  </Text>
+                {this.state.alerts && this.state.alerts.MinimumAgeOK ? (
+                  <View style={styles.alert}>
+                    <Image
+                      source={require('../../assets/check.png')}
+                      style={styles.pickericon2}></Image>
+                    <Text style={styles.datatext12}>
+                      {this.state.alerts.MinimumAgeOK}
+                    </Text>
+                  </View>
                 ) : null}
-                {this.state.searchResults &&
-                this.state.searchResults.MaximumAge ? (
-                  <Text style={styles.datatext12}>
-                    {' '}
-                    {this.state.searchResults.MaximumAge}
-                  </Text>
+                {this.state.alerts && this.state.alerts.MaximumAge ? (
+                  <View style={styles.alert}>
+                    <Image
+                      source={require('../../assets/OffLabelUses.png')}
+                      style={styles.pickericon2}></Image>
+                    <Text style={styles.datatext12}>
+                      {this.state.alerts.MaximumAge}
+                    </Text>
+                  </View>
                 ) : null}
-                <Text style={styles.datatext12}>
-                  {this.state.searchResults &&
-                  this.state.searchResults.UsageDuration
-                    ? this.state.searchResults.UsageDuration
-                    : null}
-                </Text>
-                {this.state.searchResults &&
-                this.state.searchResults.UsageDurationOK ? (
-                  <Text style={styles.datatext12}>
-                    {' '}
-                    {this.state.searchResults.UsageDurationOK}
-                  </Text>
+                {this.state.alerts && this.state.alerts.UsageDuration ? (
+                  <View style={styles.alert}>
+                    <Image
+                      source={require('../../assets/OffLabelUses.png')}
+                      style={styles.pickericon2}></Image>
+                    <Text style={styles.datatext12}>
+                      {this.state.alerts.UsageDuration}
+                    </Text>
+                  </View>
                 ) : null}
-                {this.state.searchResults && this.state.searchResults.gender ? (
-                  <Text style={styles.datatext12}>
-                    {' '}
-                    {this.state.searchResults.gender}
-                  </Text>
+                {this.state.alerts && this.state.alerts.UsageDurationOK ? (
+                  <View style={styles.alert}>
+                    <Image
+                      source={require('../../assets/check.png')}
+                      style={styles.pickericon2}></Image>
+                    <Text style={styles.datatext12}>
+                      {this.state.alerts.UsageDurationOK}
+                    </Text>
+                  </View>
                 ) : null}
-                {this.state.searchResults &&
-                this.state.searchResults.genderOK ? (
-                  <Text style={styles.datatext12}>
-                    {' '}
-                    {this.state.searchResults.genderOK}
-                  </Text>
+                {this.state.alerts && this.state.alerts.gender ? (
+                  <View style={styles.alert}>
+                    <Image
+                      source={require('../../assets/OffLabelUses.png')}
+                      style={styles.pickericon2}></Image>
+                    <Text style={styles.datatext12}>
+                      {this.state.alerts.gender}
+                    </Text>
+                  </View>
                 ) : null}
-                {this.state.searchResults &&
-                this.state.searchResults.Conditions ? (
-                  <Text style={styles.datatext12}>
-                    {' '}
-                    {this.state.searchResults.Conditions}
-                  </Text>
+                {this.state.alerts && this.state.alerts.genderOK ? (
+                  <View style={styles.alert}>
+                    <Image
+                      source={require('../../assets/check.png')}
+                      style={styles.pickericon2}></Image>
+                    <Text style={styles.datatext12}>
+                      {this.state.alerts.genderOK}
+                    </Text>
+                  </View>
                 ) : null}
-                {this.state.searchResults &&
-                this.state.searchResults.ApprovedOffLabelUses ? (
-                  <Text style={styles.datatext12}>
-                    {' '}
-                    {this.state.searchResults.ApprovedOffLabelUses}
-                  </Text>
+                {this.state.alerts && this.state.alerts.Conditions ? (
+                  <View style={styles.alert}>
+                    <Image
+                      source={require('../../assets/OffLabelUses.png')}
+                      style={styles.pickericon2}></Image>
+                    <Text style={styles.datatext12}>
+                      {this.state.alerts.Conditions}
+                    </Text>
+                  </View>
                 ) : null}
-                <Text style={styles.datatext12}>
-                  {!this.state.searchResults.OffLabelUses
-                    ? 'None'
-                    : 'Loading...'}
-                </Text>
+                {this.state.alerts && this.state.alerts.ApprovedOffLabelUses ? (
+                  <View style={styles.alert}>
+                    <Image
+                      source={require('../../assets/OffLabelUses.png')}
+                      style={styles.pickericon2}></Image>
+                    <Text style={styles.datatext12}>
+                      {this.state.alerts.ApprovedOffLabelUses}
+                    </Text>
+                  </View>
+                ) : null}
+                {/* <Text style={styles.datatext12}>
+                  {!this.state.alerts.OffLabelUses ? 'None' : 'Loading...'}
+                </Text> */}
                 <TouchableOpacity
                   onPress={() => {
+                    this.resetState()
                     this.props.navigation.navigate('Bulletindetails', {
                       bullID: this.state.searchResults.bullID,
                       GenericName: this.state.searchResults.GenericName,

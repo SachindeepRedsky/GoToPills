@@ -47,16 +47,11 @@ export default class BulletinDetail extends Component {
   // };
   componentDidMount() {
     let bullID = this.props.navigation.state.params.bullID;
-    console.log(
-      'bullIDbullIDbullIDbullIDbullIDbullIDbullIDbullIDbullIDbullID',
-      bullID,
-    );
     this.getBullitenById(bullID);
   }
   getBullitenById = async (bullID) => {
     this.setState({ isLoading: true });
     let data = await api.bulletinByID(bullID);
-    console.log('data..............................', data);
     this.setState({
       bulletin: data,
       header: data.brandName,

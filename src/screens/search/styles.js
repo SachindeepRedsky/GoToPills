@@ -7,7 +7,11 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: '2%',
   },
-
+alert:{
+  flexDirection: 'row',
+  // alignItems: 'center',
+  marginTop: 15,
+},
   menuicon: {
     width: 15,
     height: 15,
@@ -17,6 +21,16 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     marginLeft: 15,
+  },
+  pickericon: {
+    alignSelf: 'center',
+    height: 15,
+    width: 20,
+  },
+  pickericon2: {
+    // alignSelf: 'center',
+    height: 15,
+    width: 20,
   },
   SubView: {
     flex: 1,
@@ -38,13 +52,10 @@ const styles = StyleSheet.create({
     lineHeight: 25,
   },
   datatext1: {
-    color: 'red',
-    marginTop: 15,
     alignItems: 'center',
   },
   datatext12: {
     color: 'black',
-    marginTop: 15,
     alignItems: 'center',
   },
   TextView: {
@@ -154,24 +165,19 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   middleView: {
+    flex: 1,
     flexDirection: 'row',
-    //alignItems:'stretch',
-    width: '90%',
-    justifyContent: 'space-between',
   },
   MiddleFirstView: {
-    // marginLeft: 10,
-    width: '50%',
-    // height: 400
+    flex: 0.5,
   },
   MiddleSecondView: {
-    alignContent: 'flex-end',
-    width: '50%',
+    flex: 0.5,
   },
   inputBox1: {
     borderBottomWidth: 2,
     borderBottomColor: '#dadada',
-    width: '80%',
+    width: '90%',
     height: 30,
     padding: 0,
   },
@@ -191,12 +197,11 @@ const styles = StyleSheet.create({
   PickerView1: {
     borderBottomWidth: 2,
     borderBottomColor: '#dadada',
+    flexDirection: 'row',
   },
   dropDown1: {
-    height: 50,
-    width: '80%',
-    borderBottomWidth: 2,
-    borderBottomColor: '#dadada',
+    color: colors.blackColor,
+    backgroundColor: 'red',
   },
   Button: {
     marginTop: 25,
@@ -253,7 +258,6 @@ const styles = StyleSheet.create({
   autocompleteListContainerStyle: {
     width: '100%',
     borderWidth: 0,
-    // backgroundColor: 'red'
   },
   autocompleteListStyle: {
     width: '100%',
