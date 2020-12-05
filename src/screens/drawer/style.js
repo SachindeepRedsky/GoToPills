@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
     container: {
         height: '100%'
     },
+    name:{
+        color:colors.whiteColor, fontSize:16,fontWeight:'bold',marginTop:10,
+    },
     userDetailView:{ justifyContent: 'center', paddingLeft: 10 },
     color:{ color: colors.whiteColor, },
     divider:{
@@ -32,10 +35,9 @@ const styles = StyleSheet.create({
         color: colors.greyColor,
     },
     icon: {
-        height: 20,
+        height: 28,
         width: 24,
         marginRight: "6%",
-        marginBottom: "13%"
     },
     backgroundImage: {
         flex: 1,

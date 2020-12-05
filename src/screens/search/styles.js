@@ -28,8 +28,7 @@ alert:{
     width: 20,
   },
   pickericon2: {
-    // alignSelf: 'center',
-    height: 15,
+    height: 20,
     width: 20,
   },
   SubView: {
@@ -197,11 +196,10 @@ alert:{
   PickerView1: {
     borderBottomWidth: 2,
     borderBottomColor: '#dadada',
-    flexDirection: 'row',
+    // flexDirection: 'row',
   },
   dropDown1: {
     color: colors.blackColor,
-    backgroundColor: 'red',
   },
   Button: {
     marginTop: 25,

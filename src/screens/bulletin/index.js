@@ -41,9 +41,9 @@ export default class Bulletin extends Component {
   };
 
   render() {
-    const renderItem = ({item, key}) => (
+    const renderItem = ({item}) => (
+      // console.log('itemitemitem',item)
       <TouchableOpacity
-        key={key}
         onPress={() => {
           this.timerFlatlistRef.scrollToIndex({
             animated: true,
@@ -80,7 +80,6 @@ export default class Bulletin extends Component {
           }}
           onScrollAnimationEnd={false}
           onEndReached={(distance) => {
-            console.log(distance);
             if (!this.onEndReachedCalledDuringMomentum) {
               this.getBullitens(10); // LOAD MORE DATA
               this.onEndReachedCalledDuringMomentum = true;

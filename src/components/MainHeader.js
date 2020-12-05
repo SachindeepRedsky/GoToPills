@@ -23,9 +23,15 @@ export default class mainHeader extends Component {
 
   render() {
     let navigate = this.props.navigate;
+    let search = '';
+    let GenericName = '';
     const menuBtn = (
       <Image source={menu} resizeMode="cover" style={{width: 20, height: 20}} />
     );
+    if (navigate.state.routeName === 'Bulletindetails') {
+      search = this.props.searchNavigationRougt;
+      GenericName = this.props.searchNavigationParams;
+    }
 
     return (
       <Header style={[{backgroundColor: '#4458e4'}]}>
@@ -37,19 +43,37 @@ export default class mainHeader extends Component {
           </TouchableOpacity>
         </Left>
         <Body style={{flex: 6, alignItems: 'center'}}>
-            <Text
-              allowFontScaling={false}
-              style={{
-                color: '#fff',
-                fontSize: 24,
-                fontWeight: 'bold',
-                textTransform: 'uppercase',
-                paddingLeft:'6%'
-              }}>
-              {this.props.title}
-            </Text>
+          <Text
+            allowFontScaling={false}
+            style={{
+              color: '#fff',
+              fontSize: 24,
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              paddingLeft: '6%',
+            }}>
+            {this.props.title}
+          </Text>
         </Body>
-        <Right>{null}</Right>
+        <Right>
+          {navigate.state.routeName === 'Bulletindetails' ? (
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigate.navigate(search, {
+                  GenericName: GenericName,
+                });
+              }}>
+              <Image
+                source={require('../assets/search2.png')}
+                style={{
+                  width: 30,
+                  height: 30,
+                  marginTop: '1%',
+                }}
+              />
+            </TouchableOpacity>
+          ) : null}
+        </Right>
       </Header>
     );
   }

@@ -16,7 +16,9 @@ import styles from './style';
 export default class DrawerMenu extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      name: 'Guest User'
+    };
   }
 
   bulletins = () => {
@@ -49,14 +51,13 @@ export default class DrawerMenu extends Component {
                 source={profile}
                 style={styles.profilePicBackground}
               />
-            </View>
-            <View style={styles.userDetailView}>
-              <Text allowFontScaling={false}>{this.state.name}</Text>
+              <Text style={styles.name} allowFontScaling={false}>{this.state.name}</Text>
+
             </View>
           </View>
           <View style={{marginLeft: 20, marginTop: 20}}>
             <TouchableOpacity onPress={this.search}>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{flexDirection: 'row',marginBottom: "10%" }}>
                 <Image source={search} style={Styles.icon} />
                 <Text allowFontScaling={false} style={Styles.txt}>
                   Search
@@ -64,7 +65,7 @@ export default class DrawerMenu extends Component {
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={this.bulletins}>
-              <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row',marginBottom: "10%" }}>
                 <Image source={bulletin} style={Styles.icon} />
                 <Text allowFontScaling={false} style={Styles.txt}>
                   Bulletins

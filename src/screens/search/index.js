@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  Animated,
 } from 'react-native';
 import MainHeader from '../../components/MainHeader';
 import {searchStrings} from '../../constants/title';
@@ -14,7 +15,7 @@ import styles from './styles';
 import * as api from '../../api/bulletin-service';
 import * as searchService from '../../api/search-service';
 import Autocomplete from 'react-native-autocomplete-input';
-import {Picker} from 'native-base';
+import {Picker} from '@react-native-picker/picker';
 
 var bullitens = [];
 var conditions = [];
@@ -40,14 +41,15 @@ export default class Search extends Component {
       selectedAgeType: 'years',
       gender: 'male',
       isSearchDone: false,
+      fromBD: false,
       alerts: {
         None: '',
       },
+      GenericName: '',
     };
   }
 
   resetState = async () => {
-    console.log('reset state')
     await this.setState({
       searchResults: {},
       prescribedText: String,
@@ -68,27 +70,14 @@ export default class Search extends Component {
       alerts: {
         None: '',
       },
+      GenericName: '',
     });
   };
 
-  onChangeText(text, val) {
-    if (val == 1) {
-      this.setState({
-        durationText: text,
-      });
-      console.log('CHANGING TEXT::::::::', this.state.durationText);
-    } else {
-      this.setState({
-        ageText: text,
-      });
-      console.log('CHANGING TEXT::::::::', this.state.ageText);
-    }
-  }
-
-  componentDidMount= async()=> {
+  componentDidMount = async () => {
     await this.getBullitens();
-   await this.getConditions();
-  }
+    await this.getConditions();
+  };
 
   getBullitens = async () => {
     const data = await api.allBulletinsNames();
@@ -157,11 +146,9 @@ export default class Search extends Component {
       duration_type: this.state.selectedDurationType,
       gender: this.state.gender,
     };
-    console.log('drug..............//////////////', drug);
     await searchService
       .bulletinSearch(drug)
       .then((result) => {
-      
         if (result.usageAlerts != 'NONE') {
           if (
             this.state.reason != '' &&
@@ -207,7 +194,6 @@ export default class Search extends Component {
           this.setState({
             isSearchDone: true,
           });
-          console.log('SEARCH RESPONSE::::::::', result.usageAlerts);
         } else {
           let searchResults = result;
           result.usageAlerts = {None: 'No Off Label Results Found'};
@@ -227,47 +213,77 @@ export default class Search extends Component {
       });
   };
 
+  UNSAFE_componentWillReceiveProps() {
+    this.resetState();
+  }
+  componentDidUpdate() {
+    this.checkbd();
+  }
+  checkbd = () => {
+    try {
+      let GenericName = this.props.navigation.state.params.GenericName;
+      if (
+        GenericName !== undefined &&
+        GenericName !== '' &&
+        this.state.fromBD === false
+      ) {
+        this.setState({
+          fromBD: true,
+          GenericName: GenericName,
+          bullitensQuery: GenericName,
+        });
+      }
+    } catch {}
+  };
   render() {
     const {bullitensQuery} = this.state;
     const {conditionQuery} = this.state;
     const data = this.findBullitens(bullitensQuery);
     const data1 = this.findConditions(conditionQuery);
     const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
-
+    // const a =this.checkbd()
     return (
       <View style={styles.container}>
         <MainHeader navigate={this.props.navigation} title={'Search'} />
         {!this.state.isSearchDone ? (
           <ScrollView>
             <Text style={styles.textstyle}>{searchStrings.approvedTitle}</Text>
+
             <View style={{width: '90%', alignSelf: 'center', height: '100%'}}>
               <View style={styles.inputView}>
                 <Text style={styles.Text}>{searchStrings.prescribedLable}</Text>
-                <Autocomplete
-                  underlineShow={true}
-                  style={styles.autocompleteText}
-                  // containerStyle={this.state.hideResults ? { height: 100 } : { height: 100 }}
-                  listContainerStyle={styles.autocompleteListContainerStyle}
-                  listStyle={styles.autocompleteListStyle}
-                  // placeholder="Enter Customer Name"
-                  data={
-                    data.length === 1 && comp(bullitensQuery, data[0].name)
-                      ? []
-                      : data
-                  }
-                  defaultValue={bullitensQuery}
-                  hideResults={this.state.hideResults}
-                  inputContainerStyle={styles.autocompleteInputContainer}
-                  onChangeText={(text) =>
-                    this.setState({bullitensQuery: text, hideResults: false})
-                  }
-                  renderItem={({item, i}) => (
-                    <TouchableOpacity
-                      onPress={() => this.selectBullitens(item)}>
-                      <Text>{item.name}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
+                {this.state.GenericName !== '' &&
+                this.state.GenericName !== undefined &&
+                this.state.GenericName !== null ? (
+                  <Text style={styles.textstyle}>
+                    {this.state.GenericName}
+                  </Text>
+                ) : (
+                  <Autocomplete
+                    underlineShow={true}
+                    style={styles.autocompleteText}
+                    // containerStyle={this.state.hideResults ? { height: 100 } : { height: 100 }}
+                    listContainerStyle={styles.autocompleteListContainerStyle}
+                    listStyle={styles.autocompleteListStyle}
+                    data={
+                      data.length === 1 && comp(bullitensQuery, data[0].name)
+                        ? []
+                        : data
+                    }
+                    defaultValue={bullitensQuery}
+                    hideResults={this.state.hideResults}
+                    inputContainerStyle={styles.autocompleteInputContainer}
+                    onChangeText={(text) =>
+                      this.setState({bullitensQuery: text, hideResults: false})
+                    }
+                    renderItem={({item, i}) => (
+                      <TouchableOpacity
+                        onPress={() => this.selectBullitens(item)}>
+                        <Text>{item.name}</Text>
+                      </TouchableOpacity>
+                    )}
+                  />
+                )}
                 {/* <TextInput
                 style={styles.inputBox}
                 value={this.state.prescribedText}
@@ -315,7 +331,6 @@ export default class Search extends Component {
                       style={styles.inputBox1}
                       placeholder="12"
                       onChangeText={(text) => {
-                        console.log('texttexttexttexttext', text);
                         this.setState({
                           durationText: text,
                         });
@@ -336,35 +351,33 @@ export default class Search extends Component {
                     <Text style={styles.Textinputbox}>
                       {searchStrings.gender}
                     </Text>
-                    <View style={[styles.PickerView1]}>
+                    <View style={[styles.PickerView1, {paddingTop: '7%'}]}>
                       <Picker
                         mode={'dropdown'}
                         selectedValue={this.state.gender}
                         style={styles.dropDown1}
                         onValueChange={(itemValue) => {
-                          console.log('itemValue', itemValue);
                           this.setState({gender: itemValue});
                         }}>
                         <Picker.Item label="Male" value="male" />
                         <Picker.Item label="Female" value="female" />
                       </Picker>
-                      <Image
-                        source={require('../../assets/downarrow.png')}
-                        style={styles.pickericon}
-                      />
                     </View>
                   </View>
                   <View style={styles.MiddleSecondView}>
                     <View
                       style={[
                         styles.PickerView1,
-                        {paddingTop: '7%', alignSelf: 'flex-end'},
+                        {
+                          paddingTop: '7%',
+                          //  alignSelf: 'flex-end'
+                        },
                       ]}>
                       <Picker
                         mode={'dropdown'}
                         selectedValue={this.state.selectedDurationType}
                         style={styles.dropDown1}
-                        onValueChange={(itemValue, itemIndex) =>
+                        onValueChange={(itemValue) =>
                           this.setState({selectedDurationType: itemValue})
                         }>
                         <Picker.Item label="Days" value="days" />
@@ -372,31 +385,23 @@ export default class Search extends Component {
                         <Picker.Item label="Months" value="months" />
                         <Picker.Item label="Years" value="years" />
                       </Picker>
-                      <Image
+                      {/* <Image
                         source={require('../../assets/downarrow.png')}
                         style={styles.pickericon}
-                      />
+                      /> */}
                     </View>
-                    <View
-                      style={[
-                        styles.PickerView1,
-                        {paddingTop: '7%', alignSelf: 'flex-end'},
-                      ]}>
+                    <View style={[styles.PickerView1, {paddingTop: '7%'}]}>
                       <Picker
                         mode={'dropdown'}
                         selectedValue={this.state.selectedAgeType}
                         style={styles.dropDown1}
-                        onValueChange={(itemValue, itemIndex) =>
+                        onValueChange={(itemValue) =>
                           this.setState({selectedAgeType: itemValue})
                         }>
                         <Picker.Item label="Years" value="years" />
                         <Picker.Item label="Months" value="months" />
                         <Picker.Item label="Days" value="days" />
                       </Picker>
-                      <Image
-                        source={require('../../assets/downarrow.png')}
-                        style={styles.pickericon}
-                      />
                     </View>
                   </View>
                 </View>
@@ -563,7 +568,6 @@ export default class Search extends Component {
                 </Text> */}
                 <TouchableOpacity
                   onPress={() => {
-                    this.resetState()
                     this.props.navigation.navigate('Bulletindetails', {
                       bullID: this.state.searchResults.bullID,
                       GenericName: this.state.searchResults.GenericName,

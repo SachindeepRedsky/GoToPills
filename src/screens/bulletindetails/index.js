@@ -1,20 +1,17 @@
-import React, { Component } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import React, {Component} from 'react';
+import {View, Text, ScrollView, StyleSheet} from 'react-native';
 import MainHeader from '../../components/MainHeader';
 import * as api from '../../api/bulletin-service';
 import styles from './styles';
 import HTMLView from 'react-native-htmlview';
-import { deviceWidth } from '../../utility'
-import { Dimensions, PixelRatio } from 'react-native';
+import {deviceWidth} from '../../utility';
+import {Dimensions, PixelRatio} from 'react-native';
 
 function renderNode(node, index, siblings, parent, defaultRenderer) {
-  console.log('RRRRRRRRR:R:R:R:R:R:',node)
- 
   // if (node.name == undefined) {
   //   return null
   // }
 }
-
 
 export default class BulletinDetail extends Component {
   constructor(props) {
@@ -24,47 +21,65 @@ export default class BulletinDetail extends Component {
       header: 'Finding Bulletin...',
       isLoading: false,
       skip: 0,
-      width: PixelRatio.roundToNearestPixel(deviceWidth)
+      width: PixelRatio.roundToNearestPixel(deviceWidth),
+      fromBD: false,
     };
-
-    console.log('WWWWWWW:W:WW:W:', this.state.width, this.width)
   }
-  // state = {
-  //   header: 'Abilify',
-  //   Data: [
-  //     {name: 'Generic Name:', title: ''},
-  //     {name: 'Drua Category:', title: ''},
-  //     {name: 'Litiqation Alert Level:', title: ''},
-  //   ],
-  //   names: [
-  //     {name: 'Cautionary Conditions:', title: ''},
-  //     {name: 'Off-label Uses:', title: ''},
-  //     {name: 'Approved Uses:', title: ''},
-  //     {name: 'Off-label Uses:', title: ''},
-  //     {name: 'Adverse Events:', title: ''},
-  //     {name: 'Litigation:', title: ''},
-  //   ],
-  // };
   componentDidMount() {
-    let bullID = this.props.navigation.state.params.bullID;
-    this.getBullitenById(bullID);
+    this.getbullprops();
+  }
+  componentDidUpdate() {
+    this.getbullprops();
+  }
+  getbullprops() {
+    try {
+      let bullID = this.props.navigation.state.params.bullID;
+      if (
+        bullID !== undefined &&
+        bullID !== '' &&
+        this.state.fromBD === false
+      ) {
+        this.setState({
+          fromBD: true,
+        });
+        this.getBullitenById(bullID);
+      }
+    } catch {}
+  }
+  UNSAFE_componentWillReceiveProps() {
+    this.setState({
+      bulletin: {},
+      header: 'Finding Bulletin...',
+      isLoading: false,
+      skip: 0,
+      width: PixelRatio.roundToNearestPixel(deviceWidth),
+      fromBD: false,
+    });
   }
   getBullitenById = async (bullID) => {
-    this.setState({ isLoading: true });
-    let data = await api.bulletinByID(bullID);
-    this.setState({
-      bulletin: data,
-      header: data.brandName,
-      isLoading: false,
-    });
+    this.setState({isLoading: true});
+    try {
+      let data = await api.bulletinByID(bullID);
+      this.setState({
+        fromBD: true,
+        bulletin: data,
+        header: data.brandName,
+        isLoading: false,
+      });
+    } catch {
+    }
   };
-
 
   render() {
     return (
       <View style={styles.MainBox}>
-        <MainHeader navigate={this.props.navigation} title={this.state.header} />
-        <ScrollView style={{ margin: 12 }}>
+        <MainHeader
+          navigate={this.props.navigation}
+          title={this.state.header}
+          searchNavigationRougt={'Search'}
+          searchNavigationParams={this.state.bulletin.GenericName}
+        />
+        <ScrollView style={{margin: 12}}>
           <View style={styles.Item1}>
             <Text style={styles.datatext}>{'Generic Name:'}</Text>
             <Text style={styles.titleText}>
@@ -110,23 +125,24 @@ export default class BulletinDetail extends Component {
             </Text>
           </View>
           <View style={styles.Item}>
-            <View style={{ flexWrap: 'wrap' }}>
+            <View style={{flexWrap: 'wrap'}}>
               <Text style={styles.datatext}>{'Approved Uses:'}</Text>
             </View>
             <Text style={styles.titleText1}>
               {this.state.bulletin && this.state.bulletin.approvedUse ? (
-                <View style={{
-                  width: this.state.width - 25,
-                  flexWrap: 'wrap'
-                }}>
+                <View
+                  style={{
+                    width: this.state.width - 25,
+                    flexWrap: 'wrap',
+                  }}>
                   <HTMLView
                     addLineBreaks={false}
-                    value={this.state.bulletin.approvedUse} stylesheet={stylesHtml}>
-                  </HTMLView>
+                    value={this.state.bulletin.approvedUse}
+                    stylesheet={stylesHtml}></HTMLView>
                 </View>
               ) : (
-                  <Text style={styles.titleText1}>{'Finding Bulletin...'}</Text>
-                )}
+                <Text style={styles.titleText1}>{'Finding Bulletin...'}</Text>
+              )}
             </Text>
           </View>
           <View style={styles.Item}>
@@ -135,18 +151,19 @@ export default class BulletinDetail extends Component {
             </View>
             <Text style={styles.titleText1}>
               {this.state.bulletin && this.state.bulletin.offLabelUse ? (
-                <View style={{
-                  width: this.state.width - 25,
-                  flexWrap: 'wrap'
-                }}>
+                <View
+                  style={{
+                    width: this.state.width - 25,
+                    flexWrap: 'wrap',
+                  }}>
                   <HTMLView
                     addLineBreaks={false}
-                    value={this.state.bulletin.offLabelUse} stylesheet={stylesHtml}>
-                  </HTMLView>
+                    value={this.state.bulletin.offLabelUse}
+                    stylesheet={stylesHtml}></HTMLView>
                 </View>
               ) : (
-                  <Text style={styles.titleText1}>{'Finding Bulletin...'}</Text>
-                )}
+                <Text style={styles.titleText1}>{'Finding Bulletin...'}</Text>
+              )}
             </Text>
           </View>
           <View style={styles.Item}>
@@ -154,32 +171,33 @@ export default class BulletinDetail extends Component {
               <Text style={styles.datatext}>{'Adverse Events:'}</Text>
             </View>
             {this.state.bulletin && this.state.bulletin.adverseEvents ? (
-              <View style={{
-                width: this.state.width - 25,
-                flexWrap: 'wrap'
-              }}>
-             <HTMLView
-                addLineBreaks={false}
-                value={this.state.bulletin.adverseEvents} renderNode={renderNode}>
-              </HTMLView>
+              <View
+                style={{
+                  width: this.state.width - 25,
+                  flexWrap: 'wrap',
+                }}>
+                <HTMLView
+                  addLineBreaks={false}
+                  value={this.state.bulletin.adverseEvents}
+                  renderNode={renderNode}></HTMLView>
               </View>
             ) : (
-                <Text style={styles.titleText1}>{'Finding Bulletin...'}</Text>
-              )}
+              <Text style={styles.titleText1}>{'Finding Bulletin...'}</Text>
+            )}
           </View>
 
-          <View style={[styles.Item, { width: this.state.width - 25 }]}>
+          <View style={[styles.Item, {width: this.state.width - 25}]}>
             <View>
               <Text style={styles.datatext}>{'Litigation:'}</Text>
             </View>
             {this.state.bulletin && this.state.bulletin.litigation ? (
               <HTMLView
                 addLineBreaks={false}
-                value={this.state.bulletin.litigation} stylesheet={stylesHtml}>
-              </HTMLView>
+                value={this.state.bulletin.litigation}
+                stylesheet={stylesHtml}></HTMLView>
             ) : (
-                <Text style={styles.titleText1}>{'Finding Bulletin...'}</Text>
-              )}
+              <Text style={styles.titleText1}>{'Finding Bulletin...'}</Text>
+            )}
           </View>
         </ScrollView>
       </View>
@@ -192,6 +210,6 @@ const stylesHtml = StyleSheet.create({
     fontWeight: '300',
     color: '#FF3366', // make links coloured pink
     margin: 0,
-    padding: 0
-  }
+    padding: 0,
+  },
 });
