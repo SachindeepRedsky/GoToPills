@@ -18,7 +18,7 @@ export default class BulletinDetail extends Component {
     super(props);
     this.state = {
       bulletin: {},
-      header: 'Finding Bulletin...',
+      header: 'Searching...',
       isLoading: false,
       skip: 0,
       width: PixelRatio.roundToNearestPixel(deviceWidth),
@@ -49,7 +49,7 @@ export default class BulletinDetail extends Component {
   UNSAFE_componentWillReceiveProps() {
     this.setState({
       bulletin: {},
-      header: 'Finding Bulletin...',
+      header: 'Searching...',
       isLoading: false,
       skip: 0,
       width: PixelRatio.roundToNearestPixel(deviceWidth),
@@ -85,7 +85,7 @@ export default class BulletinDetail extends Component {
             <Text style={styles.titleText}>
               {this.state.bulletin && this.state.bulletin.GenericName
                 ? this.state.bulletin.GenericName
-                : 'Finding Bulletin...'}
+                : 'Searching...'}
             </Text>
           </View>
           <View style={styles.Item1}>
@@ -93,7 +93,7 @@ export default class BulletinDetail extends Component {
             <Text style={styles.titleText}>
               {this.state.bulletin && this.state.bulletin.drugCat
                 ? this.state.bulletin.drugCat
-                : 'Finding Bulletin...'}
+                : 'Searching...'}
             </Text>
           </View>
           <View style={styles.Item1}>
@@ -101,7 +101,7 @@ export default class BulletinDetail extends Component {
             <Text style={styles.titleText}>
               {this.state.bulletin && this.state.bulletin.litAlertLvl
                 ? this.state.bulletin.litAlertLvl
-                : 'Finding Bulletin...'}
+                : 'Searching...'}
             </Text>
           </View>
           <View style={styles.Item}>
@@ -111,7 +111,7 @@ export default class BulletinDetail extends Component {
             <Text style={styles.titleText1}>
               {this.state.bulletin && this.state.bulletin.excond
                 ? this.state.bulletin.excond
-                : 'Finding Bulletin...'}
+                : 'Searching...'}
             </Text>
           </View>
           <View style={styles.Item}>
@@ -121,7 +121,7 @@ export default class BulletinDetail extends Component {
             <Text style={styles.titleText1}>
               {this.state.bulletin && this.state.bulletin.uses
                 ? this.state.bulletin.uses
-                : 'Finding Bulletin...'}
+                : 'Searching...'}
             </Text>
           </View>
           <View style={styles.Item}>
@@ -141,7 +141,7 @@ export default class BulletinDetail extends Component {
                     stylesheet={stylesHtml}></HTMLView>
                 </View>
               ) : (
-                <Text style={styles.titleText1}>{'Finding Bulletin...'}</Text>
+                <Text style={styles.titleText1}>{'Searching...'}</Text>
               )}
             </Text>
           </View>
@@ -162,7 +162,7 @@ export default class BulletinDetail extends Component {
                     stylesheet={stylesHtml}></HTMLView>
                 </View>
               ) : (
-                <Text style={styles.titleText1}>{'Finding Bulletin...'}</Text>
+                <Text style={styles.titleText1}>{'Searching...'}</Text>
               )}
             </Text>
           </View>
@@ -182,7 +182,7 @@ export default class BulletinDetail extends Component {
                   renderNode={renderNode}></HTMLView>
               </View>
             ) : (
-              <Text style={styles.titleText1}>{'Finding Bulletin...'}</Text>
+              <Text style={styles.titleText1}>{'Searching...'}</Text>
             )}
           </View>
 
@@ -196,7 +196,7 @@ export default class BulletinDetail extends Component {
                 value={this.state.bulletin.litigation}
                 stylesheet={stylesHtml}></HTMLView>
             ) : (
-              <Text style={styles.titleText1}>{'Finding Bulletin...'}</Text>
+              <Text style={styles.titleText1}>{'Searching...'}</Text>
             )}
           </View>
         </ScrollView>

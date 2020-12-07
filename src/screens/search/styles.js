@@ -30,6 +30,7 @@ alert:{
   pickericon2: {
     height: 20,
     width: 20,
+    marginRight:'1%'
   },
   SubView: {
     flex: 1,

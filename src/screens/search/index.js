@@ -67,6 +67,7 @@ export default class Search extends Component {
       selectedAgeType: 'years',
       gender: 'male',
       isSearchDone: false,
+      fromBD: false,
       alerts: {
         None: '',
       },
@@ -177,7 +178,7 @@ export default class Search extends Component {
               'Duration: This drug is approved for up to ' +
               this.state.durationText +
               ' ' +
-              this.state.duration_type +
+              this.state.selectedDurationType +
               ' of use.';
           }
 
@@ -219,7 +220,7 @@ export default class Search extends Component {
   componentDidUpdate() {
     this.checkbd();
   }
-  checkbd = () => {
+  checkbd = async() => {
     try {
       let GenericName = this.props.navigation.state.params.GenericName;
       if (
@@ -227,7 +228,7 @@ export default class Search extends Component {
         GenericName !== '' &&
         this.state.fromBD === false
       ) {
-        this.setState({
+      await this.setState({
           fromBD: true,
           GenericName: GenericName,
           bullitensQuery: GenericName,
@@ -246,7 +247,7 @@ export default class Search extends Component {
       <View style={styles.container}>
         <MainHeader navigate={this.props.navigation} title={'Search'} />
         {!this.state.isSearchDone ? (
-          <ScrollView>
+          <ScrollView keyboardShouldPersistTaps="handled">
             <Text style={styles.textstyle}>{searchStrings.approvedTitle}</Text>
 
             <View style={{width: '90%', alignSelf: 'center', height: '100%'}}>
@@ -261,9 +262,9 @@ export default class Search extends Component {
                 ) : (
                   <Autocomplete
                     underlineShow={true}
+                    autoCorrect={false}
                     style={styles.autocompleteText}
                     // containerStyle={this.state.hideResults ? { height: 100 } : { height: 100 }}
-                    listContainerStyle={styles.autocompleteListContainerStyle}
                     listStyle={styles.autocompleteListStyle}
                     data={
                       data.length === 1 && comp(bullitensQuery, data[0].name)
@@ -279,7 +280,7 @@ export default class Search extends Component {
                     renderItem={({item, i}) => (
                       <TouchableOpacity
                         onPress={() => this.selectBullitens(item)}>
-                        <Text>{item.name}</Text>
+                        <Text style={{fontSize:16,paddingLeft:'1%'}}>{item.name}</Text>
                       </TouchableOpacity>
                     )}
                   />
@@ -431,7 +432,7 @@ export default class Search extends Component {
                   {this.state.searchResults &&
                   this.state.searchResults.GenericName
                     ? this.state.searchResults.GenericName
-                    : 'Finding Bulletin...'}
+                    : 'Searching...'}
                 </Text>
               </View>
               <View style={styles.Item1}>
@@ -439,7 +440,7 @@ export default class Search extends Component {
                 <Text style={styles.titleText}>
                   {this.state.searchResults && this.state.searchResults.drugCat
                     ? this.state.searchResults.drugCat
-                    : 'Finding Bulletin...'}
+                    : 'Searching...'}
                 </Text>
               </View>
               <View style={styles.Item1}>
@@ -448,7 +449,7 @@ export default class Search extends Component {
                   {this.state.searchResults &&
                   this.state.searchResults.litAlertLvl
                     ? this.state.searchResults.litAlertLvl
-                    : 'Finding Bulletin...'}
+                    : 'Searching...'}
                 </Text>
               </View>
               <View style={styles.SubView}>
