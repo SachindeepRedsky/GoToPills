@@ -28,9 +28,16 @@ alert:{
     width: 20,
   },
   pickericon2: {
-    height: 20,
-    width: 20,
-    marginRight:'1%'
+    height: 15,
+    width: 15,
+    marginRight:'1%',
+    marginTop:'1.3%'
+  },
+  pickericon1: {
+    height: 14,
+    width: 14,
+    marginRight:'1%',
+    marginTop:'1.3%'
   },
   SubView: {
     flex: 1,
@@ -40,28 +47,30 @@ alert:{
     marginRight: 20,
   },
   datatext: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: 'bold',
     color: 'black',
     lineHeight: 25,
   },
   titleText: {
     marginLeft: '1%',
-    fontSize: 14,
+    fontSize: 16,
     paddingTop: 1,
     lineHeight: 25,
   },
   datatext1: {
+    color: '#c23f58',
+    fontSize:16,
     alignItems: 'center',
   },
   datatext12: {
     color: 'black',
+    fontSize:16,
     alignItems: 'center',
   },
   TextView: {
     flex: 1,
     flexDirection: 'row',
-
     margin: 10,
   },
   Button: {

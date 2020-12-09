@@ -77,7 +77,7 @@ export default class BulletinDetail extends Component {
           navigate={this.props.navigation}
           title={this.state.header}
           searchNavigationRougt={'Search'}
-          searchNavigationParams={this.state.bulletin.GenericName}
+          searchNavigationParams={this.state.bulletin.brandName}
         />
         <ScrollView style={{margin: 12}}>
           <View style={styles.Item1}>

@@ -11,8 +11,8 @@ export default styles = StyleSheet.create({
   },
   logo: {
     position: 'relative',
-    bottom: 30,
-    width: 225,
-    height: 110,
+    bottom: '20%',
+    width: '100%',
+    height: '50%',
   },
 });

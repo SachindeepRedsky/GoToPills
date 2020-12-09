@@ -71,13 +71,14 @@ export default class Bulletin extends Component {
            ref={ref => (this.timerFlatlistRef = ref)}
           data={this.state.bullitens}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item, index) => index.toString()}
           initialNumToRender={10}
-          onEndReachedThreshold={0.1}
+          onEndReachedThreshold={1200}
           onScrollBeginDrag={() => this.getBullitens(10)} // LOAD MORE DATA
           onMomentumScrollBegin={() => {
             this.onEndReachedCalledDuringMomentum = false;
           }}
+          disableVirtualization={false}
           onScrollAnimationEnd={false}
           onEndReached={(distance) => {
             if (!this.onEndReachedCalledDuringMomentum) {

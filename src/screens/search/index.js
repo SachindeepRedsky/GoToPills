@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {
+  LogBox,
   View,
   Text,
   ScrollView,
@@ -16,7 +17,7 @@ import * as api from '../../api/bulletin-service';
 import * as searchService from '../../api/search-service';
 import Autocomplete from 'react-native-autocomplete-input';
 import {Picker} from '@react-native-picker/picker';
-
+LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 var bullitens = [];
 var conditions = [];
 
@@ -220,7 +221,7 @@ export default class Search extends Component {
   componentDidUpdate() {
     this.checkbd();
   }
-  checkbd = async() => {
+  checkbd = async () => {
     try {
       let GenericName = this.props.navigation.state.params.GenericName;
       if (
@@ -228,7 +229,7 @@ export default class Search extends Component {
         GenericName !== '' &&
         this.state.fromBD === false
       ) {
-      await this.setState({
+        await this.setState({
           fromBD: true,
           GenericName: GenericName,
           bullitensQuery: GenericName,
@@ -256,13 +257,12 @@ export default class Search extends Component {
                 {this.state.GenericName !== '' &&
                 this.state.GenericName !== undefined &&
                 this.state.GenericName !== null ? (
-                  <Text style={styles.textstyle}>
-                    {this.state.GenericName}
-                  </Text>
+                  <Text style={styles.textstyle}>{this.state.GenericName}</Text>
                 ) : (
                   <Autocomplete
                     underlineShow={true}
                     autoCorrect={false}
+                    keyExtractor={(item, index) => index.toString()}
                     style={styles.autocompleteText}
                     // containerStyle={this.state.hideResults ? { height: 100 } : { height: 100 }}
                     listStyle={styles.autocompleteListStyle}
@@ -277,10 +277,13 @@ export default class Search extends Component {
                     onChangeText={(text) =>
                       this.setState({bullitensQuery: text, hideResults: false})
                     }
-                    renderItem={({item, i}) => (
+                    renderItem={({item, key}) => (
                       <TouchableOpacity
+                        key={key}
                         onPress={() => this.selectBullitens(item)}>
-                        <Text style={{fontSize:16,paddingLeft:'1%'}}>{item.name}</Text>
+                        <Text style={{fontSize: 16, paddingLeft: '1%'}}>
+                          {item.name}
+                        </Text>
                       </TouchableOpacity>
                     )}
                   />
@@ -295,6 +298,7 @@ export default class Search extends Component {
                 <Autocomplete
                   underlineShow={true}
                   style={styles.autocompleteText}
+                  keyExtractor={(item, index) => index.toString()}
                   // containerStyle={styles.autoCompleteContainer1}
                   listContainerStyle={styles.autocompleteListContainerStyle}
                   listStyle={styles.autocompleteListStyle}
@@ -310,8 +314,9 @@ export default class Search extends Component {
                   onChangeText={(text) =>
                     this.setState({conditionQuery: text, hideResults2: false})
                   }
-                  renderItem={({item, i}) => (
+                  renderItem={({item, key}) => (
                     <TouchableOpacity
+                      key={key}
                       onPress={() => this.selectConditions(item)}>
                       <Text>{item.name}</Text>
                     </TouchableOpacity>
@@ -331,6 +336,7 @@ export default class Search extends Component {
                     <TextInput
                       style={styles.inputBox1}
                       placeholder="12"
+                      keyboardType={'numeric'}
                       onChangeText={(text) => {
                         this.setState({
                           durationText: text,
@@ -342,6 +348,7 @@ export default class Search extends Component {
                     </Text>
                     <TextInput
                       style={styles.inputBox1}
+                      keyboardType={'numeric'}
                       placeholder="18"
                       onChangeText={(text) =>
                         this.setState({
@@ -458,7 +465,7 @@ export default class Search extends Component {
                     <Image
                       source={require('../../assets/OffLabelUses.png')}
                       style={styles.pickericon2}></Image>
-                    <Text style={[styles.datatext1, {color: '#c23f58'}]}>
+                    <Text style={[styles.datatext1]}>
                       {this.state.alerts.OffLabelUses}
                     </Text>
                   </View>
@@ -467,7 +474,7 @@ export default class Search extends Component {
                   <View style={styles.alert}>
                     <Image
                       source={require('../../assets/check.png')}
-                      style={styles.pickericon2}></Image>
+                      style={styles.pickericon1}></Image>
                     <Text style={styles.datatext1}>
                       {this.state.alerts.OffLabelUsesOK}
                     </Text>
@@ -479,7 +486,7 @@ export default class Search extends Component {
                     <Image
                       source={require('../../assets/OffLabelUses.png')}
                       style={styles.pickericon2}></Image>
-                    <Text style={styles.datatext12}>
+                    <Text style={styles.datatext1}>
                       {this.state.alerts.MinimumAge}
                     </Text>
                   </View>
@@ -488,7 +495,7 @@ export default class Search extends Component {
                   <View style={styles.alert}>
                     <Image
                       source={require('../../assets/check.png')}
-                      style={styles.pickericon2}></Image>
+                      style={styles.pickericon1}></Image>
                     <Text style={styles.datatext12}>
                       {this.state.alerts.MinimumAgeOK}
                     </Text>
@@ -499,7 +506,7 @@ export default class Search extends Component {
                     <Image
                       source={require('../../assets/OffLabelUses.png')}
                       style={styles.pickericon2}></Image>
-                    <Text style={styles.datatext12}>
+                    <Text style={styles.datatext1}>
                       {this.state.alerts.MaximumAge}
                     </Text>
                   </View>
@@ -509,7 +516,7 @@ export default class Search extends Component {
                     <Image
                       source={require('../../assets/OffLabelUses.png')}
                       style={styles.pickericon2}></Image>
-                    <Text style={styles.datatext12}>
+                    <Text style={styles.datatext1}>
                       {this.state.alerts.UsageDuration}
                     </Text>
                   </View>
@@ -518,7 +525,7 @@ export default class Search extends Component {
                   <View style={styles.alert}>
                     <Image
                       source={require('../../assets/check.png')}
-                      style={styles.pickericon2}></Image>
+                      style={styles.pickericon1}></Image>
                     <Text style={styles.datatext12}>
                       {this.state.alerts.UsageDurationOK}
                     </Text>
@@ -529,7 +536,7 @@ export default class Search extends Component {
                     <Image
                       source={require('../../assets/OffLabelUses.png')}
                       style={styles.pickericon2}></Image>
-                    <Text style={styles.datatext12}>
+                    <Text style={styles.datatext1}>
                       {this.state.alerts.gender}
                     </Text>
                   </View>
@@ -538,7 +545,7 @@ export default class Search extends Component {
                   <View style={styles.alert}>
                     <Image
                       source={require('../../assets/check.png')}
-                      style={styles.pickericon2}></Image>
+                      style={styles.pickericon1}></Image>
                     <Text style={styles.datatext12}>
                       {this.state.alerts.genderOK}
                     </Text>
@@ -549,7 +556,7 @@ export default class Search extends Component {
                     <Image
                       source={require('../../assets/OffLabelUses.png')}
                       style={styles.pickericon2}></Image>
-                    <Text style={styles.datatext12}>
+                    <Text style={styles.datatext1}>
                       {this.state.alerts.Conditions}
                     </Text>
                   </View>
@@ -559,7 +566,7 @@ export default class Search extends Component {
                     <Image
                       source={require('../../assets/OffLabelUses.png')}
                       style={styles.pickericon2}></Image>
-                    <Text style={styles.datatext12}>
+                    <Text style={styles.datatext1}>
                       {this.state.alerts.ApprovedOffLabelUses}
                     </Text>
                   </View>
