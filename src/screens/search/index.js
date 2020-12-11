@@ -40,9 +40,9 @@ export default class Search extends Component {
       hideResults2: false,
       screenHeight: String,
       screenWidth: Number,
-      selectedDurationType: 'days',
-      selectedAgeType: 'years',
-      gender: 'male',
+      selectedDurationType: 'Days',
+      selectedAgeType: 'Years',
+      gender: 'Male',
       isSearchDone: false,
       fromBD: false,
       alerts: {
@@ -69,9 +69,9 @@ export default class Search extends Component {
       hideResults: false,
       screenHeight: String,
       screenWidth: Number,
-      selectedDurationType: 'days',
-      selectedAgeType: 'years',
-      gender: 'male',
+      selectedDurationType: 'Days',
+      selectedAgeType: 'Years',
+      gender: 'Male',
       isSearchDone: false,
       fromBD: false,
       alerts: {
@@ -148,10 +148,10 @@ export default class Search extends Component {
       reason: this.state.conditionQuery,
       reason: this.state.conditionQuery,
       age: this.state.ageText,
-      age_type: this.state.selectedAgeType,
+      age_type: this.state.selectedAgeType.toLowerCase(),
       duration: this.state.durationText,
-      duration_type: this.state.selectedDurationType,
-      gender: this.state.gender,
+      duration_type: this.state.selectedDurationType.toLowerCase(),
+      gender: this.state.gender.toLowerCase(),
     };
     await searchService
       .bulletinSearch(drug)
@@ -397,7 +397,7 @@ export default class Search extends Component {
                           </Text>
                           <View style={{ width: '20%', justifyContent: 'center', alignItems: 'flex-end' }}>
                             <Image
-                              source={require('./assets/downarrow.png')}
+                              source={require('../../assets/downarrow.png')}
                               style={styles.pickericon}
                             />
                           </View>
@@ -416,8 +416,8 @@ export default class Search extends Component {
                                 this.setState({ gender: itemValue });
                                 this.toggle(1);
                               }}>
-                              <Picker.Item label="Male" value="male" />
-                              <Picker.Item label="Female" value="female" />
+                              <Picker.Item label="Male" value="Male" />
+                              <Picker.Item label="Female" value="Female" />
                             </Picker>
                           </ModalContent>
                         </Modal>
@@ -438,7 +438,7 @@ export default class Search extends Component {
                           </Text>
                           <View style={{ width: '20%', justifyContent: 'center', alignItems: 'flex-end' }}>
                             <Image
-                              source={require('./assets/downarrow.png')}
+                              source={require('../../assets/downarrow.png')}
                               style={styles.pickericon}
                             />
                           </View>
@@ -458,10 +458,10 @@ export default class Search extends Component {
                                 this.toggle(2);
                               }}
                             >
-                              <Picker.Item label="Days" value="days" />
-                              <Picker.Item label="Weeks" value="weeks" />
-                              <Picker.Item label="Months" value="months" />
-                              <Picker.Item label="Years" value="years" />
+                              <Picker.Item label="Days" value="Days" />
+                              <Picker.Item label="Weeks" value="Weeks" />
+                              <Picker.Item label="Months" value="Months" />
+                              <Picker.Item label="Years" value="Years" />
                             </Picker>
                           </ModalContent>
                         </Modal>
@@ -473,7 +473,7 @@ export default class Search extends Component {
                           </Text>
                           <View style={{ width: '20%', justifyContent: 'center', alignItems: 'flex-end' }}>
                             <Image
-                              source={require('./assets/downarrow.png')}
+                              source={require('../../assets/downarrow.png')}
                               style={styles.pickericon}
                             />
                           </View>
@@ -493,9 +493,9 @@ export default class Search extends Component {
                                 this.toggle(3);
                               }}
                             >
-                              <Picker.Item label="Years" value="years" />
-                              <Picker.Item label="Months" value="months" />
-                              <Picker.Item label="Days" value="days" />
+                              <Picker.Item label="Years" value="Years" />
+                              <Picker.Item label="Months" value="Months" />
+                              <Picker.Item label="Days" value="Days" />
                             </Picker>
                           </ModalContent>
                         </Modal>
