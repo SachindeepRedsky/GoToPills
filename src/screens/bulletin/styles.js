@@ -24,10 +24,10 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   datatext1: {
-    fontSize: 14,
+    fontSize: 18,
     fontWeight: 'bold',
     color: 'black',
-    paddingTop: 10,
+    paddingTop: 12,
   },
   boderline: {
     shadowColor: '#000',
