@@ -5,18 +5,9 @@ const styles = StyleSheet.create({
   Item: {
     flexDirection: 'column',
     alignItems: 'flex-start',
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: 'white',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 1.84,
-
-    elevation: 1,
+    padding: 12,
+    borderBottomWidth: 0.5,
+    borderBottomColor: 'red',
   },
   datatext: {
     fontSize: 18,
