@@ -6,8 +6,8 @@ export const bulletinStrings = {
   export const searchStrings = {
     headerTitle: 'Search',
     approvedTitle: 'Is this FDA approved for you?',
-    prescribedLable: 'You are prescribed:',
-    diagnosedLable: 'You have been diagnosed with:',
+    prescribedLable: 'Name of Medication:',
+    diagnosedLable: 'Reason for Medication:',
     durationLable: 'Duration:',
     ageLable: 'Age:',
     gender: 'Gender:',
