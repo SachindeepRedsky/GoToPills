@@ -4,6 +4,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import SplashScreen from '../screens/splash';
 import SearchScreen from '../screens/search';
 import BulletinScreen from '../screens/bulletin';
+import RefillsScreen from '../screens/refills';
 import BulletinDetailScreen from '../screens/bulletindetails/index';
 import DarwerMenu from '../screens/drawer/index';
 import * as colors from '../constants/colors';
@@ -43,6 +44,14 @@ const AppStack = createStackNavigator(
     },
   },
   {
+    Refills: {
+      screen: RefillsScreen,
+      navigationOptions: {
+        header: null,
+      },
+    },
+  },
+  {
     initialRouteName: 'Splash',
   },
 );
@@ -57,6 +66,9 @@ const DrawerNavigator = createDrawerNavigator({
   },
   Bulletindetails: {
     screen: BulletinDetailScreen,
+  },
+  Refills: {
+    screen: RefillsScreen,
   }
 },
   {
